@@ -5,17 +5,15 @@
 
 Interface | Abstraction 
 ------ | ----- 
-| A class can inherit from more than one interface. ex. ```public class AV : IAV1, IAV2, IAV3{} ``` | A class can extend only one abstract class. |
-| Interface is not a class | Abstract is a class. |
 | **Interface** keyword is used.  | **abstract** keyword is used to define abstract class. |
-| In interfaces, the body is definitely not found. The body is created in the inherited subclass. | Methods in abstract classes can have bodies or are marked abstract and override in the inheriting class. |
+| Interface is not a class | Abstract is a class. |
 | Interface are implemented | Abstract class are inherited. |
-| Does not contain the constructor and static members. | Can contain the constructor and static members. |
-| Does not contain the static members | Can contain the static members. |
+| A class can inherit from more than one interface. ex. ```public class AV : IAV1, IAV2, IAV3{} ``` | A class can extend only one abstract class. |
 | Allow multiple inheritance.| Abstract classes do not allow multiple inheritance |
+| In interfaces, the body is definitely not found. The body is created in the inherited subclass. | Methods in abstract classes can have bodies or are marked abstract and override in the inheriting class. |
+| Does not contain the constructor and static members. | Can contain the constructor and static members. |
 | All elements in Interface must be implemented in subclass. | In abstract classes, only abstract elements must be overridden in subclasses. Unsigned members do not have to be in subclasses. In this way, code clutter is avoided by keeping only the common features in the subclasses. |
 | An interface can not have access modifier, by default all is public. and we define these in implemented class. | All access modifier is accepted.  |
-| A class can implement more than 1 interface. | A class can extends only one abstract  class. |
 
 </details>
 
@@ -28,9 +26,37 @@ Interface | Abstraction
  - Result Filter
  - Exception Filter
 
+### A filter can be added to the pipeline at one of three scopes: 
+- by action method, 
+- by controller class or 
+- globally (which be applied to all the controller and actions). 
+> We need to register filters in to the MvcOption.Filters collection within ConfigureServices method.
+
 ![](https://camo.githubusercontent.com/4711bb74ccf3f761f71bec058afa51a2d7c5aae62b3a7d2ea384b36a04349955/68747470733a2f2f66346e33783663352e737461636b7061746863646e2e636f6d2f61727469636c652f776f726b696e672d776974682d66696c746572732d696e2d6173702d6e65742d636f72652d6d76632f496d616765732f312e706e67)
 
 ![](https://camo.githubusercontent.com/cc25260ca6c4b609ad9403e297a7a304b0395e03e3d3e4ca3726f0fc95f8fe17/68747470733a2f2f66346e33783663352e737461636b7061746863646e2e636f6d2f61727469636c652f776f726b696e672d776974682d66696c746572732d696e2d6173702d6e65742d636f72652d6d76632f496d616765732f322e706e67)
+
+### We can apply our filter to the controller class or action method using one of the following, 
+- ServiceFilterAttribute
+```c#
+[ServiceFilter(typeof(ExampleFilterWithDI))]  
+public IActionResult Index()  
+{  
+    return View();  
+}
+```
+- TypeFilterAttribute
+    - It is very similar to ServiceFilterAttribute and also implemented from IFilterFactory interface.
+    - The "TypeFilterAttribute" can be optionally accept constructor arguments for the type. 
+```c#
+[TypeFilter(typeof(ExampleFilterAttribute), Arguments = new object[] {"Argument if any" })]  
+public IActionResult About()  
+{  
+    return View();  
+}
+```
+- IFilterFactory implemented on attribute
+
 
 References: <br>
 
@@ -54,5 +80,92 @@ References: <br>
 | It is not compulsory to initialize a parameter value before using it in a calling method. |	A parameter value must be initialized within the calling method before its use. |
 | When we use REF, data can be passed bi-directionally. | When we use OUT data is passed only in a unidirectional way (from the called method to the caller method). |
 | Both ref and out are treated differently at run time and they are treated the same at compile time. |
+
+References:
+- [https://www.c-sharpcorner.com/UploadFile/ff2f08/ref-vs-out-keywords-in-C-Sharp/](https://www.c-sharpcorner.com/UploadFile/ff2f08/ref-vs-out-keywords-in-C-Sharp/)
+
+</details>
+
+<details>
+<summary> Polymorphism </summary>
+
+- Polymorphism means "one name many forms"
+- In other words, one object has many forms or has one name with multiple functionalities.
+
+### Types of Polymorphism
+
+_There are two types of polymorphism in C#:_
+- Static / Compile Time Polymorphism / Early binding
+    - Overloading is the concept in which method names are the same with different parameters. 
+    - The method/function has the same name but different signatures in overloading.
+```c#
+public class TestData
+{
+    public int Add(int a, int b, int c)
+    {
+        return a + b + c;
+    }
+    public int Add(int a, int b)
+    {
+        return a + b;
+    }
+}
+```
+- Dynamic / Runtime Polymorphism / late binding
+    - When overriding a method, you change the behavior of the method for the derived class.
+
+
+![](https://camo.githubusercontent.com/40913eb9b10c9753e24d704451994e1b0887620b59c525eabc7c90639a84c867/68747470733a2f2f66346e33783663352e737461636b7061746863646e2e636f6d2f55706c6f616446696c652f6666326630382f756e6465727374616e64696e672d706f6c796d6f72706869736d2d696e2d432d53686172702f496d616765732f706c6f796d6f72706869736d2e6a7067)
+
+
+### Other points about polymorphism:
+
+    Method Overriding differs from shadowing.
+    Using the "new" keyword, we can hide the base class member."
+    We can prevent a derived class from overriding virtual members.
+    We can access a base class virtual member from the derived class
+
+***In C#, by default, all the members of a class are sealed and cannot be redefined in the derived class. Use the virtual keyword with a member of the base class to make it overridable, and use the override keyword in the derived class to indicate that this member of the base class is being redefined in the derived class***
+
+### Rules for Overriding:
+
+    A method, property, indexer, or event can be overridden in the derived class.
+    Static methods cannot be overridden.
+    Must use virtual keyword in the base class methods to indicate that the methods can be overridden.
+    Must use the override keyword in the derived class to override the base class method.
+
+
+References:
+- [https://www.c-sharpcorner.com/UploadFile/ff2f08/understanding-polymorphism-in-C-Sharp/](https://www.c-sharpcorner.com/UploadFile/ff2f08/understanding-polymorphism-in-C-Sharp/)
+- [https://www.tutorialsteacher.com/csharp/method-overriding](https://www.tutorialsteacher.com/csharp/method-overriding)
+</details>
+
+<details>
+<summary>Boxing and Unboxing</summary>
+
+- Boxing
+    - The conversion of value type to reference type is known as boxing.
+![](https://camo.githubusercontent.com/c9821116564e899b1028d1a2877dd3247c1d98abf5c497b79c61a8f939958f42/68747470733a2f2f7777772e7475746f7269616c73746561636865722e636f6d2f436f6e74656e742f696d616765732f61727469636c65732f6373686172702f626f78696e672e504e47)
+
+- Unboxing
+    - The conversion of reference type to value is known as unboxing.
+![](https://camo.githubusercontent.com/cfe6e987e2db984639001d98acc69faeda0a4d8626d8abdf3dd54f4fdaad6cc1/68747470733a2f2f7777772e7475746f7269616c73746561636865722e636f6d2f436f6e74656e742f696d616765732f61727469636c65732f6373686172702f756e626f78696e672e504e47)
+
+References:
+- [https://www.tutorialsteacher.com/articles/boxing-unboxing-in-csharp](https://www.tutorialsteacher.com/articles/boxing-unboxing-in-csharp)
+
+</details>
+
+<details>
+<summary>DI</summary>
+
+### There are 3 types of lifetimes supported by ASP.NET Core for the dependency injection,
+- Transient Service
+    - New instance transient service is created whenever the service is requested.
+- Scoped Service
+    - Created once per scope; i.e., web request.or any unit of work.
+- Singleton Service
+    - Singleton service is only created when it is called for the first time. In the next subsequent requests, the same instance is provided. 
+
 
 </details>
