@@ -159,6 +159,8 @@ References:
 <details>
 <summary>DI</summary>
 
+- It is a design pattern that allows objects to depend on other objects, called dependencies, without creating them directly.
+
 ### There are 3 types of lifetimes supported by ASP.NET Core for the dependency injection,
 - Transient Service
     - New instance transient service is created whenever the service is requested.
@@ -169,3 +171,199 @@ References:
 
 
 </details>
+
+<details>
+<summary>What are the features of C#?</summary>
+
+1. Object-Oriented Programming
+```
+C# is an object-oriented programming (OOP) language. It supports features such as classes, objects, encapsulation, inheritance, and polymorphism.
+```
+
+2. Type Safety
+```
+It is a type-safe language, which means that it enforces type checking at compile time to ensure that variables are used only in the ways intended by the programmer. Example:-
+```
+```C#
+int x = 10;   // declaring an integer variable and initializing it with value 10
+string str = "Hello, World!";   // declaring a string variable and initializing it with a string value
+
+// We cannot assign a string value to an integer variable:
+x = str;   // This will result in a compilation error
+
+// Similarly, we cannot call a method on a variable that doesn't support it:
+int y = 5;
+y.ToUpper();   // This will result in a compilation error since ToUpper() method 
+```
+
+3. Garbage Collection
+```
+C# includes automatic garbage collection, which automatically frees up memory that is no longer being used by the program.
+```
+
+4. Cross-Platform Support
+``` 
+C# can be used to develop applications for a wide range of platforms, including Windows, macOS, Linux, and mobile devices.
+```
+
+5. Language Interoperability 
+```
+C# can interoperate with other programming languages, including C, C++, and Visual Basic.
+```
+
+6. LINQ
+```
+Language Integrated Query (LINQ) is a powerful feature in C# that allows developers to query and manipulate data from different data sources using a uniform syntax.
+```
+
+7. Asynchronous Programming
+```
+C# includes support for asynchronous programming, which allows developers to write code that can execute concurrently without blocking the main thread.
+```
+
+<details>
+<summary>What is Asynchronous and synchronous with example in c#</summary>
+
+- Synchronous refers to an operation that blocks the execution of the program until the operation completes
+
+- Asynchronous, on the other hand, refers to an operation that does not block the execution of the program but instead executes in the background, allowing the program to continue executing other operations.
+
+### Here's an example of synchronous code in C#:
+```c#
+public static void Main()
+{
+    Console.WriteLine("Starting synchronous operation...");
+    string result = GetDataFromWeb(); // This method blocks the execution until it gets the data
+    Console.WriteLine("Synchronous operation completed with result: " + result);
+}
+
+public static string GetDataFromWeb()
+{
+    // This method makes a web request to get some data
+    WebClient client = new WebClient();
+    string result = client.DownloadString("http://example.com");
+    return result;
+}
+
+```
+> In the above code, the `Main` method makes a call to the `GetDataFromWeb` method, which makes a web request to retrieve some data. Since this operation is synchronous, the execution of the program is blocked until the web request completes and returns the data. Only then does the program continue to execute the next line of code.
+
+### Here's an example of asynchronous code in C#:
+```c#
+public static async Task Main()
+{
+    Console.WriteLine("Starting asynchronous operation...");
+    Task<string> resultTask = GetDataFromWebAsync(); // This method executes in the background
+    Console.WriteLine("Asynchronous operation started, program continues executing other operations...");
+
+    // Do some other work here while the GetDataFromWebAsync() method is executing in the background
+
+    string result = await resultTask; // This line blocks until the GetDataFromWebAsync() method completes and returns the data
+    Console.WriteLine("Asynchronous operation completed with result: " + result);
+}
+
+public static async Task<string> GetDataFromWebAsync()
+{
+    // This method makes an asynchronous web request to get some data
+    HttpClient client = new HttpClient();
+    string result = await client.GetStringAsync("http://example.com");
+    return result;
+}
+```
+> In the above code, the `Main` method makes a call to the `GetDataFromWebAsync` method, which makes an asynchronous web request to retrieve some data. Since this operation is asynchronous, the execution of the program is not blocked and the program continues executing other operations while the web request is being made in the background. The program then waits for the result of the asynchronous operation using the `await` keyword, which does not block the execution of the program but instead waits for the result to become available before continuing to execute the next line of code.
+
+</details>
+
+
+8. Exception Handling
+```
+C# includes robust exception handling capabilities that allow developers to handle and recover from runtime errors in a structured manner.
+```
+
+9. Delegates and Events
+```
+C# supports the use of delegates and events, which are used for implementing callback functions and event-driven programming.
+```
+
+<details>
+<summary>Click here for more</summary>
+
+- A `delegate` is a type that represents a reference to a method with a particular parameter list and return type
+```c#
+public delegate int BinaryOperation(int x, int y);
+
+public class Calculator
+{
+    public int Add(int x, int y)
+    {
+        return x + y;
+    }
+
+    public int Subtract(int x, int y)
+    {
+        return x - y;
+    }
+}
+
+public static void Main()
+{
+    Calculator calculator = new Calculator();
+
+    BinaryOperation operation = new BinaryOperation(calculator.Add);
+
+    int result = operation(5, 3); // result = 8
+
+    operation = new BinaryOperation(calculator.Subtract);
+
+    result = operation(5, 3); // result = 2
+}
+
+```
+
+- An `event` is a construct built on top of delegates that allows objects to be notified when an event occurs.
+```c#
+public class Button
+{
+    public event EventHandler Clicked;
+
+    public void Click()
+    {
+        if (Clicked != null)
+        {
+            Clicked(this, EventArgs.Empty);
+        }
+    }
+}
+
+public static void Main()
+{
+    Button button = new Button();
+
+    button.Clicked += OnButtonClicked;
+
+    button.Click();
+}
+
+public static void OnButtonClicked(object sender, EventArgs e)
+{
+    Console.WriteLine("Button clicked!");
+}
+
+```
+
+</details></br>
+
+10. Security Features
+```
+C# includes security features such as code access security, which helps protect against malicious code execution, and cryptography, which allows for secure communication and data storage.
+```
+
+</details>
+
+<details>
+<summary>what is signature of method in c#</summary>
+
+- The signature of a method in C# consists of its name and the types of its parameters. The return type of the method is not considered part of its signature.
+
+</details>
+
