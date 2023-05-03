@@ -160,6 +160,12 @@ References:
 <summary>DI</summary>
 
 - It is a design pattern that allows objects to depend on other objects, called dependencies, without creating them directly.
+- It is a software design pattern which enables the development of loosely coupled code. Through DI, you can decrease tight coupling between software components. It is also known as Inversion-of-Control.
+
+### There are three types of DIs:
+    Constructor Injection
+    Setter Injection
+    Method Injection
 
 ### There are 3 types of lifetimes supported by ASP.NET Core for the dependency injection,
 - Transient Service
@@ -169,6 +175,9 @@ References:
 - Singleton Service
     - Singleton service is only created when it is called for the first time. In the next subsequent requests, the same instance is provided. 
 
+---
+References
+- [https://stackify.com/dependency-injection-c-sharp/](https://stackify.com/dependency-injection-c-sharp/)
 
 </details>
 
