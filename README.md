@@ -19,6 +19,8 @@ Interface | Abstraction
 
 <details>
 <summary>Filters</summary>
+
+> Filters allow us to run custom code before or after executing the action method. They provide ways to do common repetitive tasks on our action method. The filters are invoked on certain stages in the request processing pipeline.
  
  - Authorization FIlter
  - Resource Filter
