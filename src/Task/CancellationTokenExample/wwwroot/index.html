@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancellation Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <button id="startButton">Start Long-Running Task</button>
+    <button id="cancelButton" disabled>Cancel Task</button>
+
+    <script>
+        const startButton = document.getElementById("startButton");
+        const cancelButton = document.getElementById("cancelButton");
+
+        let cancelTokenSource;
+
+        startButton.addEventListener("click", async () => {
+            startButton.disabled = true;
+            cancelButton.disabled = false;
+            cancelTokenSource = axios.CancelToken.source();
+
+            try {
+                const response = await axios.get("/weatherforecast/longrunningtask", {
+                    cancelToken: cancelTokenSource.token,
+                });
+
+                console.log(response.data);
+            } catch (error) {
+                if (axios.isCancel(error)) {
+                    console.log("Request canceled:", error.message);
+                } else {
+                    console.error("Error:", error);
+                }
+            } finally {
+                startButton.disabled = false;
+                cancelButton.disabled = true;
+            }
+        });
+
+        cancelButton.addEventListener("click", () => {
+            if (cancelTokenSource) {
+                cancelTokenSource.cancel("Task canceled by the user.");
+            }
+        });
+    </script>
+</body>
+</html>
