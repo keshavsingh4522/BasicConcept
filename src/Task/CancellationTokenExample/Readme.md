@@ -15,15 +15,47 @@ cancellationTokenSource.Cancel();
 ```
 
 - Let us understand with example, using code:
+```c#
+    [HttpGet("longrunningtask")]
+    public async Task<IActionResult> LongRunningTask(CancellationToken cancellationToken)
+    {
+        try
+        {
+            int iterations = 20;
+
+            for (int i = 0; i < iterations; i++)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+                _logger.LogInformation($"Iteration {i + 1} of {iterations} completed.");
+            }
+
+            return Ok("Long-running task completed successfully.");
+        }
+        catch (OperationCanceledException)
+        {
+            Console.WriteLine("Download cancelled.");
+            return Ok("Long-running task cancelled successfully.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+            Response.StatusCode = 500;
+            return Ok("Inernal error.");
+        }
+    }
+```
 > A below method simulates a long-running task by delaying for 1 second in each iteration of a loop. 
   The CancellationToken is passed as a parameter, and we use the `ThrowIfCancellationRequested()` method to stop 
   the operation if a cancellation request is received.
  
-
+ ![PIC_01]()
  
 > Now, if we cancel the request after a certain period of time, the ongoing operation will be interrupted and 
   will not proceed with further processing. This ensures that the operation stops as soon as the cancellation request is made.
  
 
-•	If the CancellationToken is not canceled, the process will execute to completion without interruption. The operation will continue until it has finished, and it will not stop prematurely.
+> If the CancellationToken is not canceled, the process will execute to completion without interruption. 
+  The operation will continue until it has finished, and it will not stop prematurely.
  
+ ![PIC_02]()
