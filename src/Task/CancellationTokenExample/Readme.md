@@ -1,3 +1,5 @@
+Open a browser and navigate to `https://localhost:5001` or `https://localhost:7045`
+
 ## Cancellation Token
 - It provides a simple and efficient way to manage cancellation of long-running or asynchronous tasks.
 - It allows you to cancel an operation cooperatively, meaning that the operation itself monitors the cancellation request and stops executing when it is requested.
