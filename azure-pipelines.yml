@@ -13,7 +13,7 @@ pool:
 variables:
   Sonarcloud.ProjectKey: $(Build.Repository.Name)
   tag:  '$(Build.BuildId)' #'live'
-  version: Build.BuildNumber
+  version: $(Build.BuildNumber)
   # appName: 'keshavsingh4522/my-portfolio'
   # appName: 'my-portfolio'
   appName: 'MyPortfolioAPI'
