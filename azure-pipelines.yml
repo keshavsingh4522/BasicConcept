@@ -36,7 +36,7 @@ stages:
               SonarCloud: "PD SonarCloud"
               organization: "keshavsingh4522-01"
               scannerMode: "MSBuild"
-              projectKey: "keshavsingh4522_$(Build.Repository.Name)"
+              projectKey: "keshavsingh4522_BasicConcept"
               extraProperties: "|
                 sonar.cs.vscoveragexml.reportsPaths=**/*.coveragexml
                 sonar.dotnet.excludeGeneratedCode=true
