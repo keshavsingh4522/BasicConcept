@@ -2,6 +2,7 @@
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
+name: $(Major).$(Minor).$(Patch)
 
 trigger:
 - main
@@ -18,6 +19,10 @@ variables:
   appName: 'MyPortfolioAPI'
   dockerfile: 'src/$(Build.Repository.Name).API/Dockerfile'
   BuildConfiguration: 'Release'
+  Major: 1
+  Minor: 0
+  Patch: "$[counter(format('{0}.{1}', variables['Major'], variables['Minor']), 0)]"
+
 
 stages:
   - stage: Build_Test_Analyse
