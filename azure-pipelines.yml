@@ -12,6 +12,7 @@ pool:
 variables:
   Sonarcloud.ProjectKey: $(Build.Repository.Name)
   tag:  '$(Build.BuildId)' #'live'
+  version: Build.BuildNumber
   # appName: 'keshavsingh4522/my-portfolio'
   # appName: 'my-portfolio'
   appName: 'MyPortfolioAPI'
@@ -41,6 +42,8 @@ stages:
                 sonar.cs.vscoveragexml.reportsPaths=**/*.coveragexml
                 sonar.dotnet.excludeGeneratedCode=true
                 sonar.coverage.exclusions=**/*.html,**/*.css"
+              projectVersion: $(version)
+              projectName: Basic Concept Project
           - task: DotNetCoreCLI@2
             displayName: "Build all projects in repo"
             inputs:
