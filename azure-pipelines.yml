@@ -39,7 +39,7 @@ stages:
               scannerMode: "MSBuild"
               projectKey: "keshavsingh4522_BasicConcept"
               extraProperties: "|
-                sonar.cs.vscoveragexml.reportsPaths=**/*.coveragexml
+                sonar.cs.vscoveragexml.reportsPaths= **/coverage.cobertura.xml #**/*.coveragexml
                 sonar.dotnet.excludeGeneratedCode=true
                 sonar.coverage.exclusions=**/*.html,**/*.css"
               projectVersion: $(version)
@@ -59,7 +59,8 @@ stages:
             displayName: "Execute Unit Test Projects"
             inputs:
               command: "test"
-              arguments: '--collect "Code Coverage"'
+              # arguments: '--collect "Code Coverage"'
+              arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
           - task: SonarCloudAnalyze@1
             displayName: "Run SonarCloud Code Analysis"
 
