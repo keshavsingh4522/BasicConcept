@@ -1,0 +1,61 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  Sonarcloud.ProjectKey: $(Build.Repository.Name)
+  tag:  '$(Build.BuildId)' #'live'
+  # appName: 'keshavsingh4522/my-portfolio'
+  # appName: 'my-portfolio'
+  appName: 'MyPortfolioAPI'
+  dockerfile: 'src/$(Build.Repository.Name).API/Dockerfile'
+  BuildConfiguration: 'Release'
+
+stages:
+  - stage: Build_Test_Analyse
+    displayName: Build, Test and Analyse
+    jobs:
+      - job:
+        displayName: Build, Test and Analyse
+        steps:
+          - task: DotNetCoreCLI@2
+            displayName: "Restore Nuget Packages"
+            inputs:
+              command: "restore"
+              feedsToUse: "select"
+          - task: SonarCloudPrepare@1
+            displayName: "Prepare SonarCloud for Code Analysis"
+            inputs:
+              SonarCloud: "PD SonarCloud"
+              organization: "keshavsingh4522-01"
+              scannerMode: "MSBuild"
+              projectKey: $(Build.Repository.Name)
+              extraProperties: "|
+                sonar.cs.vscoveragexml.reportsPaths=**/*.coveragexml
+                sonar.dotnet.excludeGeneratedCode=true
+                sonar.coverage.exclusions=**/*.html,**/*.css"
+          - task: DotNetCoreCLI@2
+            displayName: "Build all projects in repo"
+            inputs:
+              command: "build"
+              arguments: '--configuration $(BuildConfiguration)'
+
+          - task: DotNetCoreCLI@2
+            displayName: "Execute Unit Test Projects"
+            inputs:
+              command: "test"
+              arguments: '--collect "Code Coverage"'
+          - task: SonarCloudAnalyze@1
+            displayName: "Run SonarCloud Code Analysis"
+
+          - task: SonarCloudPublish@1
+            displayName: "Publish SonarCloud Code Analysis"
+            inputs:
+              pollingTimeoutSec: "300"
