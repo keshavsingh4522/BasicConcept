@@ -31,11 +31,6 @@ stages:
       - job:
         displayName: Build, Test and Analyse
         steps:
-          - task: DotNetCoreCLI@2
-            displayName: "Restore Nuget Packages"
-            inputs:
-              command: "restore"
-              feedsToUse: "select"
           - task: SonarCloudPrepare@1
             displayName: "Prepare SonarCloud for Code Analysis"
             inputs:
@@ -48,7 +43,12 @@ stages:
                 sonar.dotnet.excludeGeneratedCode=true
                 sonar.coverage.exclusions=**/*.html,**/*.css"
               projectVersion: $(version)
-              projectName: Basic Concept Project
+              projectName: Basic Concept $(version)
+          - task: DotNetCoreCLI@2
+            displayName: "Restore Nuget Packages"
+            inputs:
+              command: "restore"
+              feedsToUse: "select"
           - task: DotNetCoreCLI@2
             displayName: "Build all projects in repo"
             inputs:
